@@ -17,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -312,12 +313,18 @@ public class Bluetooth {
                     Bluetooth.this.socket = device.createInsecureRfcommSocketToServiceRecord(uuid);
                 }
                 else{
-                    Bluetooth.this.socket = device.createRfcommSocketToServiceRecord(uuid);
+                    Bluetooth.this.socket = (BluetoothSocket) device.getClass().getMethod("createRfcommSocket", new Class[] {int.class}).invoke(device, 1);
                 }
             } catch (IOException e) {
                 if(deviceCallback !=null){
                     deviceCallback.onError(e.getMessage());
                 }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
             }
         }
 
