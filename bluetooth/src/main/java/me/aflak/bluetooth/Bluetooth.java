@@ -192,6 +192,10 @@ public class Bluetooth {
         }
     }
 
+    public BluetoothDevice getDeviceFromAddress(String address) {
+        return bluetoothAdapter.getRemoteDevice(address);
+    }
+
     public boolean isConnected(){
         return connected;
     }
